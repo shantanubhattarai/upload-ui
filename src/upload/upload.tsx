@@ -1,7 +1,10 @@
 import { useState } from "react";
 import DropZone from "./dropzone";
+import { v4 as uuidv4 } from "uuid";
+import UploadPreview from "./upload-preview";
 
 export type UploadImage = {
+  id: string;
   name: string;
   src: string;
 };
@@ -18,12 +21,20 @@ const Upload = () => {
     if (e.target.files && e.target.files.length > 0) {
       [...e.target.files].forEach((file) => {
         if (file.type.includes("image")) {
-          inputImages.push({ name: file.name, src: URL.createObjectURL(file) });
+          inputImages.push({
+            id: uuidv4(),
+            name: file.name,
+            src: URL.createObjectURL(file),
+          });
         }
       });
     }
 
     setUploadedImages((prev) => [...prev, ...inputImages]);
+  };
+
+  const handleImageDelete = (id: string) => {
+    setUploadedImages((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
@@ -34,7 +45,10 @@ const Upload = () => {
       <section>
         <DropZone handleImageDrop={handleImageDrop} />
         <UploadInput handleImageInput={handleImageInput} />
-        <UploadPreview previewImages={uploadedImages} />
+        <UploadPreview
+          previewImages={uploadedImages}
+          handleImageDelete={handleImageDelete}
+        />
       </section>
       <footer>
         <button className="ghost close-button">Close</button>
@@ -63,19 +77,6 @@ const UploadInput = ({
         />
       </div>
     </section>
-  );
-};
-
-const UploadPreview = ({ previewImages }: { previewImages: UploadImage[] }) => {
-  return (
-    <div className="upload-preview">
-      <p className="description">Selected Files:</p>
-      <div className="image-list">
-        {previewImages.map((item, index) => (
-          <img src={item.src} key={`uploadedImage-${item.name}-${index}`} />
-        ))}
-      </div>
-    </div>
   );
 };
 
