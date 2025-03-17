@@ -117,6 +117,9 @@ button.close-button {
 .upload-preview .image-list {
   display: flex;
   gap: 4px;
+  max-width: 100%;
+  overflow:auto;
+  padding-bottom: 8px;
 }
 
 ::-webkit-scrollbar {
@@ -151,6 +154,7 @@ button.close-button {
 
 .image-preview-container {
   position: relative;
+  flex-shrink: 0;
 }
 
 .image-preview-container .icon {
