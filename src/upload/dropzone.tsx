@@ -1,5 +1,6 @@
 import DragandDrop from "../assets/drag-and-drop.svg";
 import type { UploadImage } from "./upload";
+import { v4 as uuidv4 } from "uuid";
 
 const DropZone = ({
   handleImageDrop,
@@ -15,6 +16,7 @@ const DropZone = ({
         const inputFile = item.getAsFile();
         if (inputFile && inputFile.type.includes("image")) {
           droppedImages.push({
+            id: uuidv4(),
             name: inputFile.name,
             src: URL.createObjectURL(inputFile),
           });
